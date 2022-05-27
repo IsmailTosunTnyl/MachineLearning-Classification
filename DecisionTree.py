@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+import Utils
 from Utils import RawData
 
 df = RawData().df
@@ -19,17 +20,19 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-clf = tree.DecisionTreeClassifier(criterion="gini",splitter="best",max_depth=12)
+clf = tree.DecisionTreeClassifier(criterion="gini", splitter="best", max_depth=12)  # hyperparameters
 clf = clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 dot_data = tree.export_graphviz(clf, out_file=None)
-graph = graphviz.Source(dot_data,filename="dt.gv",format="pdf")
-graph.render("iris")
+graph = graphviz.Source(dot_data, filename="dt.gv", format="pdf")
+graph.render("DT")
 graph.save()
 
-"""error = list()
+Utils.Plotter().plot(y_test,y_pred)
+
+error = list()
 for i in range(1, 40):
     clf = tree.DecisionTreeClassifier(criterion="gini",splitter="best",max_depth=i)
     clf.fit(X_train, y_train)
@@ -39,7 +42,7 @@ for i in range(1, 40):
 plt.figure(figsize=(12, 6))
 plt.plot(range(1, 40), error, color='red', linestyle='dashed', marker='o',
          markerfacecolor='blue', markersize=10)
-plt.title('Error Rate K Value')
-plt.xlabel('K Value')
+plt.title('Error Rate max depth Value')
+plt.xlabel('Max Depth')
 plt.ylabel('Mean Error')
-plt.show()"""
+plt.show()

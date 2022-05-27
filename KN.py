@@ -14,19 +14,8 @@ df = RawData().df
 
 X = df[RawData().feature_cols]  # Features
 y = df.music_genre  # Target variable
-# scaling
-MinMaxScaler = preprocessing.MinMaxScaler()
-X_data_minmax = MinMaxScaler.fit_transform(X)
-data = pd.DataFrame(X_data_minmax, columns=RawData().feature_cols)
-X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.25, random_state=1)
-print(data.head())
 
 knn_clf = KNeighborsClassifier(n_neighbors=16)
-knn_clf.fit(X_train, y_train)
-ypred = knn_clf.predict(X_test)
-
-print(accuracy_score(y_test, ypred))
-Plotter().plot(y_test, ypred)
 
 scaler = StandardScaler()
 df = RawData().df
@@ -40,6 +29,8 @@ knn_clf.fit(X_train_s, y_train)
 ypred = knn_clf.predict(X_test_s)
 
 print(accuracy_score(y_test, ypred))
+Plotter().plot(y_test, ypred)
+Plotter().traning_curves(X, y, knn_clf, "K-Nearest Neighbors")
 
 # k finder
 error = list()

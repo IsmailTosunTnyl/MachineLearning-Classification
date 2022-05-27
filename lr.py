@@ -3,6 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 
+import Utils
 from Utils import RawData, Plotter
 from sklearn.model_selection import train_test_split, learning_curve
 from sklearn.metrics import accuracy_score
@@ -32,28 +33,6 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 Plotter().plot(y_test, y_pred)
 
 
-def traning_curves():
-    global X, y, lr
-    train_sizes = [1, 100, 500, 2000, 5000, 7654, 10000, 15000, 20000, 22000]
-    train_sizes, train_scores, validation_scores = learning_curve(
-        estimator=lr,
-        X=X,
-        y=y, train_sizes=train_sizes, cv=5,
-        scoring='neg_mean_squared_error')
-
-    train_scores_mean = -train_scores.mean(axis=1)
-    validation_scores_mean = -validation_scores.mean(axis=1)
-
-    plt.style.use('seaborn')
-    plt.plot(train_sizes, train_scores_mean, label='Training error')
-    plt.plot(train_sizes, validation_scores_mean, label='Validation error')
-    plt.ylabel('MSE', fontsize=14)
-    plt.xlabel('Training set size', fontsize=14)
-    plt.title('Learning curves for a Logistic Regression model', fontsize=18, y=1.03)
-    plt.legend()
-    plt.ylim(0, 40)
-    plt.show()
-
 
 def iter_accuracy():
     global X_train,X_test
@@ -75,4 +54,4 @@ def iter_accuracy():
     plt.show()
 
 iter_accuracy()
-traning_curves()
+Utils.Plotter().traning_curves(X,y,lr,"Logistic Regression")

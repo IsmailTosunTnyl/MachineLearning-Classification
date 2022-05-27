@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import metrics
 import numpy as np
+from sklearn.model_selection import learning_curve
+
 
 class RawData:
     def __init__(self):
-
-
         self.col_names = ["instance_id", "artist_name", "track_name", "popularity", "acousticness", "danceability",
                           "duration_ms",
                           "energy",
@@ -29,8 +29,7 @@ class RawData:
 
         self.df = pd.read_csv("music_genre.csv", header=None, names=self.col_names)
 
-        self.df.drop("obtained_date",inplace=True,axis=1)
-
+        self.df.drop("obtained_date", inplace=True, axis=1)
 
         self.df = self.df[self.df.tempo != "?"]
         self.df = self.df[self.df.duration_ms != -1]
@@ -43,14 +42,14 @@ class RawData:
 
         self.df.drop_duplicates()
 
-        #self.df = self.df.sample(frac=1).reset_index(drop=True)  # randomize
+        # self.df = self.df.sample(frac=1).reset_index(drop=True)  # randomize
 
         self.df.dropna(inplace=True)
 
 
 class Plotter:
 
-    def plot(self,y_test,y_pred):
+    def plot(self, y_test, y_pred):
         cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
         class_names = [0, 1]  # name  of classes
         fig, ax = plt.subplots()
@@ -64,4 +63,25 @@ class Plotter:
         plt.title('Confusion matrix', y=1.1)
         plt.ylabel('Actual label')
         plt.xlabel('Predicted label')
+        plt.show()
+
+    def traning_curves(self,x, y, xx,name):
+        train_sizes = [1, 100, 500, 2000, 5000, 7654, 10000, 15000, 20000, 22000]
+        train_sizes, train_scores, validation_scores = learning_curve(
+            estimator=xx,
+            X=x,
+            y=y, train_sizes=train_sizes, cv=5,
+            scoring='neg_mean_squared_error')
+
+        train_scores_mean = -train_scores.mean(axis=1)
+        validation_scores_mean = -validation_scores.mean(axis=1)
+
+        plt.style.use('seaborn')
+        plt.plot(train_sizes, train_scores_mean, label='Training error')
+        plt.plot(train_sizes, validation_scores_mean, label='Validation error')
+        plt.ylabel('MSE', fontsize=14)
+        plt.xlabel('Training set size', fontsize=14)
+        plt.title(f'Learning curves for a {name} Regression model', fontsize=18, y=1.03)
+        plt.legend()
+        plt.ylim(0, 40)
         plt.show()

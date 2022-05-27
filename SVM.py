@@ -1,8 +1,10 @@
+from matplotlib import pyplot as plt
 from sklearn import svm
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, learning_curve
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 
+import Utils
 from Utils import RawData
 
 df = RawData().df
@@ -21,3 +23,6 @@ clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
 print("Accuracy:", accuracy_score(y_test, y_pred))
+
+Utils.Plotter().plot(y_test,y_pred)
+Utils.Plotter().traning_curves(X,y,clf,"Support Vector Machine")
