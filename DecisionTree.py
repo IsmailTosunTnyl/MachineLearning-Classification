@@ -25,10 +25,11 @@ clf = clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 dot_data = tree.export_graphviz(clf, out_file=None)
-graph = graphviz.Source(dot_data)
+graph = graphviz.Source(dot_data,filename="dt.gv",format="pdf")
 graph.render("iris")
+graph.save()
 
-error = list()
+"""error = list()
 for i in range(1, 40):
     clf = tree.DecisionTreeClassifier(criterion="gini",splitter="best",max_depth=i)
     clf.fit(X_train, y_train)
@@ -41,4 +42,4 @@ plt.plot(range(1, 40), error, color='red', linestyle='dashed', marker='o',
 plt.title('Error Rate K Value')
 plt.xlabel('K Value')
 plt.ylabel('Mean Error')
-plt.show()
+plt.show()"""

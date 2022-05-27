@@ -6,6 +6,8 @@ import numpy as np
 
 class RawData:
     def __init__(self):
+
+
         self.col_names = ["instance_id", "artist_name", "track_name", "popularity", "acousticness", "danceability",
                           "duration_ms",
                           "energy",
@@ -26,6 +28,10 @@ class RawData:
                            'Classical': 8, 'Hip-Hop': 9}
 
         self.df = pd.read_csv("music_genre.csv", header=None, names=self.col_names)
+
+        self.df.drop("obtained_date",inplace=True,axis=1)
+
+
         self.df = self.df[self.df.tempo != "?"]
         self.df = self.df[self.df.duration_ms != -1]
         self.df = self.df[self.df.instrumentalness != 0]
@@ -40,7 +46,7 @@ class RawData:
         #self.df = self.df.sample(frac=1).reset_index(drop=True)  # randomize
 
         self.df.dropna(inplace=True)
-        print("len df ", len(self.df))
+
 
 class Plotter:
 

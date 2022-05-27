@@ -9,7 +9,7 @@ df = RawData().df
 
 X = df[RawData().feature_cols]  # Features
 y = df.music_genre  # Target variable
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1)
 
 clf = svm.SVC(kernel='rbf')
 
