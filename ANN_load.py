@@ -1,6 +1,7 @@
-from sklearn import svm
-from sklearn.model_selection import train_test_split
+import numpy as np
+from keras.saving.save import load_model
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from Utils import RawData, Plotter
 
@@ -14,23 +15,17 @@ y = df.music_genre  # Target variable
 # Separating train and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1)
 
-# Initializing SVM modals with rbf algorithm
-clf = svm.SVC(kernel='rbf')  # ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’
-
 # Applying standardization
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Training model with train sets
-clf.fit(X_train, y_train)
+# Load pretrained model
+ann = load_model('ann_50_50.h5')
 
-# Testing model with test sets
-y_pred = clf.predict(X_test)
+#   Use model
+y_pred = ann.predict(X_test)
+y_pred = np.argmax(y_pred, axis=1)
 
-# Printing accuracy score
 print("Accuracy:", accuracy_score(y_test, y_pred))
-
-# Plot Common Graphs
-Plotter().plot_cofusion_matrix(y_test, y_pred, "Support Vector Machine")
-Plotter().plot_traning_curves(X, y, clf, "Support Vector Machine")
+Utils.Plotter().plot_cofusion_matrix(y_test, y_pred, "ANN")
