@@ -28,4 +28,4 @@ y_pred = ann.predict(X_test)
 y_pred = np.argmax(y_pred, axis=1)
 
 print("Accuracy:", accuracy_score(y_test, y_pred))
-Utils.Plotter().plot_cofusion_matrix(y_test, y_pred, "ANN")
+Plotter().plot_cofusion_matrix(y_test, y_pred, "ANN")
