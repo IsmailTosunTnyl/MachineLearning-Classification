@@ -21,7 +21,7 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Load pretrained model
-ann = load_model('ann_50_50.h5')
+ann = load_model('others/ann_50_50.h5')
 
 #   Use model
 y_pred = ann.predict(X_test)
